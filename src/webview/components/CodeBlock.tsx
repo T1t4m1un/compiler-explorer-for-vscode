@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef } from "react";
 import './CodeBlock.scss';
 import { useDispatch } from "react-redux";
-import { setSelectedLineNo } from "../stores/asm";
+import { setSelectedLineNo, setVscodeLineNo } from "../stores/asm";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 
@@ -21,6 +21,7 @@ const CodeBlockImpl: React.ForwardRefRenderFunction<HTMLDivElement, CodeBlockPro
       return;
     }
     dispatch(setSelectedLineNo(prop.lineNo));
+    dispatch(setVscodeLineNo(prop.lineNo));
   };
 
   return (<>
