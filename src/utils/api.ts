@@ -1,5 +1,6 @@
 // Refer to https://github.com/compiler-explorer/compiler-explorer/blob/main/docs/API.md
 import axios, { AxiosInstance, AxiosProxyConfig, CreateAxiosDefaults } from "axios";
+import { merge } from "lodash";
 
 const baseURL = 'https://godbolt.org/api/';
 
@@ -108,7 +109,7 @@ class API {
   }
 
   async getCompileResult (compilerId: string, compilationRequest: CompilationRequest) {
-    return this.godboltService.post(`compiler/${compilerId}/${apiEndpoint.compile}`, { ...compilationRequest, ...defaultCompileOptions });
+    return this.godboltService.post(`compiler/${compilerId}/${apiEndpoint.compile}`, merge(defaultCompileOptions, compilationRequest));
   }
 
   async getFormatsList () {
