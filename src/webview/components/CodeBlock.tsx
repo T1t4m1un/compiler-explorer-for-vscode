@@ -14,13 +14,13 @@ interface CodeBlockProp {
 const CodeBlockImpl: React.ForwardRefRenderFunction<HTMLDivElement, CodeBlockProp> = (prop, selfRef) => {
   const dispatch = useDispatch();
   const vscodeLineNo = useSelector((state: any) => state.asm.vscodeLineNo);
-  const isSelected = vscodeLineNo - 1 === prop.lineNo;
+  const isSelected = vscodeLineNo === prop.lineNo;
 
   const handleSelected = () => {
     if (prop.lineNo === undefined) {
       return;
     }
-    dispatch(setSelectedLineNo(prop.lineNo - 1));
+    dispatch(setSelectedLineNo(prop.lineNo));
   };
 
   return (<>
