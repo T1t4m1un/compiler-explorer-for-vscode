@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserArguments } from '../stores/compilationOptions';
 import { Input } from 'antd';
@@ -13,8 +13,12 @@ const CompilerArguments = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArugument(e.target.value);
-    dispatch(setUserArguments(e.target.value));
+    // to avoid closet trap, we need to dispatch the action after the state is updated
   };
+  
+  useEffect(() => {
+    dispatch(setUserArguments(argument));
+  }, [argument]);
 
   return (
     <Input
