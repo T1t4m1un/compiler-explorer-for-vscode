@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import ExplorerPanel from './panels/Explorer';
+import ExplorerPanel from './Explorer';
 import API from './utils/api';
 
 
@@ -25,9 +25,7 @@ const explorerPanel = new ExplorerPanel({ api, proxy: proxyConfig });
 
 const explorerDisposable = vscode.commands.registerCommand(
   'compiler-explorer-for-vscode.showExplorer',
-  () => {
-    explorerPanel.initPanel();
-  }
+  () => { explorerPanel.initPanel(); }
 );
 
 function activate(context: vscode.ExtensionContext) {

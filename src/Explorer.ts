@@ -1,7 +1,7 @@
 import path from 'path';
 import * as vscode from 'vscode';
 import { AxiosProxyConfig } from 'axios';
-import API from '../utils/api';
+import API from './utils/api';
 import { throttle } from 'lodash';
 
 type ExplorerPanelProps = {

@@ -66,6 +66,7 @@ const apiEndpoint = {
   shortLinkInfo: 'shortlinkinfo',
   compile: 'compile',
   formats: 'formats',
+  shortener: 'shortener',
 };
 
 class API {
@@ -106,6 +107,10 @@ class API {
 
   async getShortLinkInfo (shortLinkId: string) {
     return this.godboltService.get(`${apiEndpoint.shortLinkInfo}/${shortLinkId}`);
+  }
+
+  async getShorten (shortenerRequset: any) {
+    return this.godboltService.post(`${apiEndpoint.shortener}`, shortenerRequset);
   }
 
   async getCompileResult (compilerId: string, compilationRequest: CompilationRequest) {

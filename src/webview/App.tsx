@@ -13,6 +13,7 @@ import Grid from 'antd/es/card/Grid';
 import { Col, Row } from 'antd';
 import { setVscodeLineNo } from './stores/asm';
 import { isEqual } from 'lodash';
+import Shortener from './components/Shortener';
 
 
 const proxyReduer = (state: any, action: any) => {
@@ -62,9 +63,9 @@ const App: React.FC = () => {
   return (<>
     <Grid >
       <Row>
-      {/* <Row gutter={[16, 16]}> */}
-        <Col flex={1}><CompilerSelector /></Col>
-        <Col flex={2}><CompilerArguments /></Col>
+        <Col flex={2}><CompilerSelector /></Col>
+        <Col flex={4}><CompilerArguments /></Col>
+        <Col style={{ width: 50 }}><Shortener /></Col>
       </Row>
       <Row>
       {/* <Row gutter={[16, 16]}> */}
