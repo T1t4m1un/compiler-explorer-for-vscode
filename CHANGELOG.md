@@ -1,9 +1,17 @@
 # Change Log
 
-All notable changes to the "compiler-explorer-for-vscode" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
 
-- Initial release
+- Better UI
+- Shortlink support
+- Syntax highlight
+- Preprocess support
+
+## [0.0.1] - 2024.4.7
+
+### Added
+
+- Basic support for C/C++
+  - Show assembly in side
+  - Select compiler
+  - Customized compile arguments
