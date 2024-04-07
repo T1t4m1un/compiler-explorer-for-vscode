@@ -32,7 +32,12 @@ const CodeViewer: React.FC = () => {
   const renderCode = (res: any) => {
     const elem: ReactElement[] = [];
     if (res?.asm) {
-      const asm = res.asm as any[];
+      const asm = (res.asm as any[]).map((x: any) => {
+        if (x.source) {
+          x.source.line--;
+        }
+        return x;
+      });
     
       let l = 0;
       let lastLineNo = -1;
@@ -63,12 +68,9 @@ const CodeViewer: React.FC = () => {
                         code={asm.slice(l, i).map(x => x.text)}
                         ref={genUpdate(lastLineNo)}
                       />);
-    
-            lastLineNo = line.source.line;
             l = i;
-          } else {
-            lastLineNo = line.source.line;
           }
+          lastLineNo = line.source.line;
         }
       }
       if (lastLineNo !== -1) {
