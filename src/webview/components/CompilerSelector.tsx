@@ -26,7 +26,6 @@ const CompilerSelector: React.FC = () => {
   }, [api, language]);
 
   const handleChange = (compilerId: string) => {
-    console.log('Selected compiler', compilerId);
     setSelectedCompiler(compilerId);
     dispatch(setCompilerId(compilerId));
   };
@@ -39,7 +38,7 @@ const CompilerSelector: React.FC = () => {
       loading={isLoading}
       showSearch
       style={{ width: '100%' }}
-      popupMatchSelectWidth={false}
+      popupMatchSelectWidth={true}
     >
       {(compilers as any[]).map((compiler, idx) =>
         <Select.Option

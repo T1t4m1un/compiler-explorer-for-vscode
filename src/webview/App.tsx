@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useVsCode, MessageReceivedHandler } from '../utils/useVsCode';
 import API from '../utils/api';
 import { setLanguage } from './stores/compiler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CompilerSelector from './components/CompilerSelector';
 import { setApi } from './stores/api';
 import CompilerArguments from './components/CompilerArguments';
@@ -10,24 +10,40 @@ import CodeViewer from './components/CodeViewer';
 import { convertor } from '../utils/convertor';
 import { setSource } from './stores/source';
 import Grid from 'antd/es/card/Grid';
-import { Col, Divider, Row } from 'antd';
+import { Col, Row } from 'antd';
+import { setVscodeLineNo } from './stores/asm';
+import { isEqual } from 'lodash';
 
+
+const proxyReduer = (state: any, action: any) => {
+  switch (action.type) {
+    case 'update':
+      if (isEqual(action.payload, state)) {
+        return state; 
+      }
+      return { ...action.payload };
+    default:
+      return state;
+  }
+};
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [proxy, setProxy] = useState();
+  const [proxy, dispatchProxy] = useReducer(proxyReduer, undefined);
   useEffect(() => { dispatch(setApi(new API(proxy))); }, [proxy]);
 
   const messageHandler: MessageReceivedHandler = (incomingMessage) => {
-    console.log('Incoming message', incomingMessage);
     switch (incomingMessage.type) {
       case 'updateEditorState': {
         const language = incomingMessage.content.languageId as string;
         const source = incomingMessage.content.source as string;
         const proxy = incomingMessage.content.proxy as any;
+        const lineNo = incomingMessage.content.lineNo as number;
+
         try {
-          setProxy(proxy);
+          dispatchProxy({ type: 'update', payload: proxy });
+          dispatch(setVscodeLineNo(lineNo));
           dispatch(setSource(source));
           dispatch(setLanguage(convertor[language as keyof typeof convertor]));
         } finally {
@@ -37,6 +53,11 @@ const App: React.FC = () => {
     }
   };
   const { sendMessage } = useVsCode(messageHandler);
+
+  const asmSelectedLineNo = useSelector((state: any) => state.asm.selectedLineNo);
+  useEffect(() => {
+    sendMessage({ type: 'gotoLine', content: {asmSelectedLineNo} });
+  }, [asmSelectedLineNo]);
 
   return (<>
     <Grid >

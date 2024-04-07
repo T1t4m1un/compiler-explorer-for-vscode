@@ -7,10 +7,13 @@ interface Message {
 
 export type MessageReceivedHandler = (message: Message) => void;
 
+// @ts-ignore
+const vscode = window.vscode || acquireVsCodeApi();
+// @ts-ignore
+window.vscode = vscode;
+
 export function useVsCode(onMessageReceived: MessageReceivedHandler) {
   const sendMessage = useCallback((message: Message) => {
-    // @ts-ignore
-    const vscode = acquireVsCodeApi();
     vscode.postMessage(message);
   }, []);
 
