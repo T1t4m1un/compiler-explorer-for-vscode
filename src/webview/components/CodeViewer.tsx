@@ -2,9 +2,8 @@ import React, { ReactElement, RefObject, useEffect, useRef, useState } from "rea
 import { useSelector } from "react-redux";
 import API from "../../utils/api";
 // eslint-disable-next-line @typescript-eslint/naming-convention
-import { difference, throttle } from 'lodash';
+import { throttle } from 'lodash';
 import CodeBlock from "./CodeBlock";
-import { assert } from "console";
 
 
 const CodeViewer: React.FC = () => {
@@ -16,8 +15,6 @@ const CodeViewer: React.FC = () => {
 
   const [elem, setElem] = useState<ReactElement[]>([]);
   const lineNo2ref = useRef<{[lineNo: number]: HTMLDivElement | null}>([]);
-
-  const diff = useRef<any>({});
 
   useEffect(throttle(() => {
     if (typeof api === 'undefined' || compiler === '' || language === '') {
@@ -38,7 +35,7 @@ const CodeViewer: React.FC = () => {
         }
         return x;
       });
-    
+
       let l = 0;
       let lastLineNo = -1;
 
