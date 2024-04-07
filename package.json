@@ -2,7 +2,7 @@
   "name": "compiler-explorer-for-vscode",
   "displayName": "compiler-explorer-for-vscode",
   "description": "An extension that integrates the power of Compiler Explorer directly into Visual Studio Code, allowing developers to write, explore, and understand their code's assembly output seamlessly within editor environment.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.88.0"
   },
