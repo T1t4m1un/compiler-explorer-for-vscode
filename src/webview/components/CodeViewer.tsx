@@ -4,17 +4,19 @@ import API from "../../utils/api";
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import { throttle } from 'lodash';
 import CodeBlock from "./CodeBlock";
+import useApi from "../../utils/useApi";
 
 
 const CodeViewer: React.FC = () => {
   const compiler = useSelector((state: any) => state.compiler.selectedCompilerId);
   const language = useSelector((state: any) => state.compiler.currentLanguage);
   const userArguments = useSelector((state: any) => state.compilationOptions.userArguments);
-  const api = useSelector((state: any) => state.api.api);
   const source = useSelector((state: any) => state.source.source);
 
   const [elem, setElem] = useState<ReactElement[]>([]);
   const lineNo2ref = useRef<{[lineNo: number]: HTMLDivElement | null}>([]);
+
+  const api = useApi();
 
   useEffect(throttle(() => {
     if (typeof api === 'undefined' || compiler === '' || language === '') {

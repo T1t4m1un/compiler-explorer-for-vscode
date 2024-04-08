@@ -5,15 +5,17 @@ import API from "../../utils/api";
 import { Select } from "antd";
 import { useLocalStorageState } from "ahooks";
 import { isEmpty, set } from "lodash";
+import useApi from "../../utils/useApi";
 
 const CompilerSelector: React.FC = () => {
   const dispatch = useDispatch();
-  const api = useSelector((state: any) => state.api.api);
   const compilers = useSelector((state: any) => state.compiler.compilers);
   const language = useSelector((state: any) => state.compiler.currentLanguage);
 
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCompiler, setSelectedCompiler] = useLocalStorageState<string>(`${language}-compiler`);
+
+  const api = useApi();
 
   useEffect(() => {
     if (typeof api === 'undefined' || language === '') {
