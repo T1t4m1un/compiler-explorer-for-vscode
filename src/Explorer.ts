@@ -1,23 +1,22 @@
 import path from 'path';
 import * as vscode from 'vscode';
 import { AxiosProxyConfig } from 'axios';
-import API from '../utils/api';
 import { throttle } from 'lodash';
 
 type ExplorerPanelProps = {
-  api: API;
   proxy: AxiosProxyConfig | undefined;
+  backendUrl: string | undefined;
 };
 
 class ExplorerPanel {
   panel: vscode.WebviewPanel | undefined;
   activeEditor: vscode.TextEditor | undefined;
   proxy!: AxiosProxyConfig | undefined;
-  api!: API;
+  backendUrl: string | undefined;
 
   constructor(explorerPanelProps: ExplorerPanelProps) {
     this.proxy = explorerPanelProps.proxy;
-    this.api = explorerPanelProps.api;
+    this.backendUrl = explorerPanelProps.backendUrl;
   }
   
   getWebviewContent() {
@@ -42,15 +41,16 @@ class ExplorerPanel {
       // do nothing
     } else {
       this.activeEditor = activeEditor;
+      const backendUrl = this.backendUrl;
 
       const languageId = activeEditor.document.languageId;
       const source = vscode.window.activeTextEditor?.document.getText();
       const proxy = this.proxy;
-      const lineNo = activeEditor.selection.active.line; 
+      const lineNo = activeEditor.selection.active.line;
 
       this.panel.webview.postMessage({
         type: 'updateEditorState',
-        content: { source, languageId, proxy, lineNo, }
+        content: { source, languageId, proxy, lineNo, backendUrl, }
       });
     }
   }

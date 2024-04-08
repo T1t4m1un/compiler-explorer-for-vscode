@@ -18,6 +18,18 @@
         "title": "Show Compiler Explorer",
         "category": "Compiler Explorer for VScode"
       }
+    ],
+    "configuration": [
+      {
+        "title": "Compiler Explorer for VScode",
+        "properties": {
+          "compiler-explorer-for-vscode.backendUrl": {
+            "type": "string",
+            "default": "https://godbolt.org/api/",
+            "description": "The URL of the Compiler Explorer backend to use. You can provide your customized backend."
+          }
+        }
+      }
     ]
   },
   "scripts": {
