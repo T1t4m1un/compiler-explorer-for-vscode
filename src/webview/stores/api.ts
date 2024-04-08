@@ -4,12 +4,12 @@ import API from "../../utils/api";
 export const apiSlice = createSlice({
   name: "api",
   initialState: {
-    api: undefined,
+    proxy: undefined,
     backendUrl: 'https://godbolt.org/api/',
   },
   reducers: {
-    setApi: (state, action) => {
-      state.api = action.payload;
+    setProxy: (state, action) => {
+      state.proxy = action.payload;
     },
     setBackendUrl: (state, action) => {
       state.backendUrl = action.payload;
@@ -17,6 +17,6 @@ export const apiSlice = createSlice({
   },
 });
 
-export const { setApi, setBackendUrl, } = apiSlice.actions;
+export const { setProxy, setBackendUrl, } = apiSlice.actions;
 
 export default apiSlice.reducer;
