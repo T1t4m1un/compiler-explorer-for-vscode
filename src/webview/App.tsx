@@ -4,7 +4,7 @@ import API from '../utils/api';
 import { setLanguage } from './stores/compiler';
 import { useDispatch, useSelector } from 'react-redux';
 import CompilerSelector from './components/CompilerSelector';
-import { setApi } from './stores/api';
+import { setApi, setBackendUrl } from './stores/api';
 import CompilerArguments from './components/CompilerArguments';
 import CodeViewer from './components/CodeViewer';
 import { convertor } from '../utils/convertor';
@@ -30,12 +30,14 @@ const proxyReduer = (state: any, action: any) => {
 const App: React.FC = () => {
   const dispatch = useDispatch();
 
+  const backendUrl = useSelector((state: any) => state.api.backendUrl);
   const [proxy, dispatchProxy] = useReducer(proxyReduer, undefined);
-  useEffect(() => { dispatch(setApi(new API(proxy))); }, [proxy]);
+  useEffect(() => { dispatch(setApi(new API(proxy, backendUrl))); }, [proxy, backendUrl]);
 
   const messageHandler: MessageReceivedHandler = (incomingMessage) => {
     switch (incomingMessage.type) {
       case 'updateEditorState': {
+        const backendUrl = incomingMessage.content.backendUrl as string;
         const language = incomingMessage.content.languageId as string;
         const source = incomingMessage.content.source as string;
         const proxy = incomingMessage.content.proxy as any;
@@ -43,6 +45,7 @@ const App: React.FC = () => {
 
         try {
           dispatchProxy({ type: 'update', payload: proxy });
+          dispatch(setBackendUrl(backendUrl));
           dispatch(setVscodeLineNo(lineNo));
           dispatch(setSource(source));
           dispatch(setLanguage(convertor[language as keyof typeof convertor]));
@@ -62,12 +65,10 @@ const App: React.FC = () => {
   return (<>
     <Grid >
       <Row>
-      {/* <Row gutter={[16, 16]}> */}
         <Col flex={1}><CompilerSelector /></Col>
         <Col flex={2}><CompilerArguments /></Col>
       </Row>
       <Row>
-      {/* <Row gutter={[16, 16]}> */}
         <CodeViewer />
       </Row>
     </Grid>

@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import ExplorerPanel from './panels/Explorer';
-import API from './utils/api';
+import ExplorerPanel from './Explorer';
+import config from './config';
 
 
+// Retrieves the proxy configuration from the VS Code settings.
 const proxyConfig = (() => {
   const vscodeProxy = vscode.workspace.getConfiguration('http').get('proxy');
   if (typeof vscodeProxy !== 'string') {
@@ -16,12 +17,10 @@ const proxyConfig = (() => {
   };
 }) ();
 
-const api = new API(proxyConfig);
-
-const outputChannel = vscode.window.createOutputChannel('Compiler Explorer');
-api.setErrorLogger(error => outputChannel.appendLine(error.message));
-
-const explorerPanel = new ExplorerPanel({ api, proxy: proxyConfig });
+const explorerPanel = new ExplorerPanel({
+  proxy: proxyConfig,
+  backendUrl: config.backendUrl,
+});
 
 const explorerDisposable = vscode.commands.registerCommand(
   'compiler-explorer-for-vscode.showExplorer',

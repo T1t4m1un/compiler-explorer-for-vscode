@@ -52,7 +52,6 @@ type CompilationRequest = typeof defaultCompileOptions | {
 };
 
 const defaultGodboltServiceConfig: CreateAxiosDefaults = {
-  baseURL: baseURL,
   timeout: 10000,
   headers: {
     Accept: 'application/json',
@@ -71,10 +70,11 @@ const apiEndpoint = {
 class API {
   godboltService!: AxiosInstance;
 
-  constructor(proxy?: AxiosProxyConfig) {
+  constructor(proxy?: AxiosProxyConfig, backendUrl: string = baseURL) {
     this.godboltService = axios.create({
       ...defaultGodboltServiceConfig,
-      proxy
+      proxy,
+      baseURL: backendUrl,
     });
 
     this.godboltService.interceptors.response.use(
